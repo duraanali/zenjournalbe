@@ -46,6 +46,19 @@ export const getUserByEmail = query({
   },
 });
 
+export const getUserById = query({
+  args: {
+    id: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db.get(args.id);
+    if (!user) {
+      throw new ConvexError("User not found");
+    }
+    return user;
+  },
+});
+
 export const login = mutation({
   args: {
     email: v.string(),

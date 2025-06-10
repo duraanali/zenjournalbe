@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { ConvexClient } from "convex/browser";
 import jwt from "jsonwebtoken";
 
-const convex = new ConvexClient(process.env.NEXT_PUBLIC_CONVEX_URL);
+const convexUrl = process.env.CONVEX_URL || process.env.NEXT_PUBLIC_CONVEX_URL;
+if (!convexUrl) throw new Error("Convex URL is not set!");
+const convex = new ConvexClient(convexUrl);
 const JWT_SECRET = "zenjournal-secure-jwt-secret-key-2024";
 
 export async function POST(request) {

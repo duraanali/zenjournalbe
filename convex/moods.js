@@ -42,11 +42,33 @@ export const getWeeklyInsights = query({
   handler: async (ctx, args) => {
     const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
 
-    const moods = await ctx.db
+    let moods = await ctx.db
       .query("mood_logs")
       .withIndex("by_user", (q) => q.eq("user_id", args.userId))
       .filter((q) => q.gte(q.field("created_at"), oneWeekAgo))
       .collect();
+
+    // Debug: log all moods and their timestamps
+    console.log(
+      "Weekly moods for user",
+      args.userId,
+      moods.map((m) => ({ mood: m.mood, created_at: m.created_at }))
+    );
+
+    // If no moods in the last week, return all moods for debugging
+    let allMoods = [];
+    if (moods.length === 0) {
+      allMoods = await ctx.db
+        .query("mood_logs")
+        .withIndex("by_user", (q) => q.eq("user_id", args.userId))
+        .order("desc")
+        .collect();
+      console.log(
+        "All moods for user",
+        args.userId,
+        allMoods.map((m) => ({ mood: m.mood, created_at: m.created_at }))
+      );
+    }
 
     // Calculate mood distribution
     const moodDistribution = {};
@@ -65,6 +87,7 @@ export const getWeeklyInsights = query({
       mostCommonMood,
       daysLogged: moods.length,
       moodDistribution,
+      allMoods, // for debugging
     };
   },
 });
