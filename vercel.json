@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "builds": [{ "src": "next.config.mjs", "use": "@vercel/next" }],
+  "env": {
+    "NEXT_PUBLIC_CONVEX_URL": "<your-convex-url>",
+    "JWT_SECRET": "zenjournal-secure-jwt-secret-key-2024"
+  },
+  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/$1" }]
+}
