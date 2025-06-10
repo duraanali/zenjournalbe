@@ -164,17 +164,6 @@ All endpoints require authentication via a Bearer JWT token in the `Authorizatio
   - `400` Missing required fields
   - `401` Authentication required/Invalid token
 
-#### Delete Mood
-
-- **DELETE** `/api/moods?id=<moodId>`
-- **Headers:**
-  - `Authorization: Bearer <JWT>`
-- **Response:**
-  - `204 No Content`
-- **Errors:**
-  - `401` Authentication required/Invalid token
-  - `403` Unauthorized (not your mood)
-  - `404` Mood not found
 
 #### Get/Delete Mood by ID
 
